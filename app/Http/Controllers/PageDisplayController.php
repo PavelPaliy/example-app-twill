@@ -21,16 +21,14 @@ class PageDisplayController extends Controller
 
     public function home(): View
     {
-      //  if (TwillAppSettings::get('homepage.homepage.page')->isNotEmpty()) {
+        if (TwillAppSettings::get('homepage.homepage.page')->isNotEmpty()) {
             /** @var \App\Models\Page $frontPage */
-            $frontPage = cache()->remember("frontPage", 3600, function (){
-               return TwillAppSettings::get('homepage.homepage.page')->first();
-            });
+            $frontPage = TwillAppSettings::get('homepage.homepage.page')->first();
 
-            if (isset($frontPage->published) && $frontPage->published) {
+            if ($frontPage->published) {
                 return view('site.page', ['item' => $frontPage]);
             }
-        //}
+        }
 
         abort(404);
     }
